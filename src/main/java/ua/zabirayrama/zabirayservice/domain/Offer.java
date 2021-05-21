@@ -67,11 +67,11 @@ public class Offer implements Serializable {
 
     }
 
-    public Long getId_offer() {
+    public Long getId() {
         return id_offer;
     }
 
-    public void setId_offer(Long id_offer) {
+    public void setId(Long id_offer) {
         this.id_offer = id_offer;
     }
 
@@ -227,14 +227,15 @@ public class Offer implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Offer offer = (Offer) o;
-        return available == offer.available &&
-                Double.compare(offer.price, price) == 0 &&
-                id_offer.equals(offer.id_offer);
+        return //available == offer.available &&
+           //     Double.compare(offer.price, price) == 0 &&
+                id_offer.equals(offer.id_offer) &&
+                name.equals(offer.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id_offer, available, price);
+        return Objects.hash(id_offer, name);
     }
 
     @Override

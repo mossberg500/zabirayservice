@@ -3,12 +3,13 @@ package ua.zabirayrama.zabirayservice.domain;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "supplier")
-public class Supplier {
+public class Supplier implements Serializable {
 
     @Id
     private Long id;

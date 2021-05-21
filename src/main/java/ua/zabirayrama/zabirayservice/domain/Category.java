@@ -4,12 +4,13 @@ package ua.zabirayrama.zabirayservice.domain;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "category")
-public class Category {
+public class Category implements Serializable {
     @Id
     private Long id;
 
