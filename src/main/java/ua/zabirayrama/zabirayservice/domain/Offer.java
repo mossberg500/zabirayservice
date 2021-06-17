@@ -39,12 +39,12 @@ public class Offer implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
-    private  Category category;
+    private  Category category = new Category();
 
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id")
-    private  Supplier supplier;
+    private  Supplier supplier =new Supplier();;
 
 
     private String picture;
@@ -147,7 +147,9 @@ public class Offer implements Serializable {
 
     public void setSupplier(Long number) {
         if(number > 0) {
+            System.out.println("OOOOOOOOOOOOOOOOO  1   " + number);
             this.supplier.setId(number);
+            System.out.println("OOOOOOOOOOOOOOOOO  2   " + number);
         } else  {
             this.supplier.setId(-9999L);
         }

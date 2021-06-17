@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/category") // базовый адрес
+@CrossOrigin(origins = "http://localhost:4200") //разрешить получать данные с данного ресурса
 public class CategoryController {
 
     private final CategoryRepository categoryRepository;

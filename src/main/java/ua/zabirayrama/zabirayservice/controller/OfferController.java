@@ -17,6 +17,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/offer") // базовый адрес
+@CrossOrigin(origins = "http://localhost:4200") //разрешить получать данные с данного ресурса
 public class OfferController {
     private final OfferService offerService; // сервис для доступа к данным (напрямую к репозиториям не обращаемся)
 

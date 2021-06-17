@@ -19,7 +19,7 @@ import java.util.List;
 public class XMLParserSAX {
     public static List<Offer> xmlParserSAX() {
 
-        String urlPath = "http://sat-ellite.net/yandex_market.xml?hash_tag=73151c839448b47c3b219d818efa07fb&sales_notes=&product_ids=&label_ids=&exclude_fields=&html_description=1&yandex_cpa=&process_presence_sure=&group_ids=6445166%2C6445163%2C44720119%2C6445170%2C6445167%2C6445169%2C6445178%2C6157855&nested_group_ids=44720119%2C6157855";
+        String urlPath = "https://zabiray.com.ua/index.php?route=extension/feed/yandex_yml&token=rfHdys";
 
         try (FileWriter fileWriter = new FileWriter("parsingURL.txt")) {
             URL url = new URL(urlPath);
@@ -45,7 +45,7 @@ public class XMLParserSAX {
 
     public static List<Category> xmlParserSAXCategory() {
 
-        String urlPathcat = "http://sat-ellite.net/yandex_market.xml?hash_tag=73151c839448b47c3b219d818efa07fb&sales_notes=&product_ids=&label_ids=&exclude_fields=&html_description=1&yandex_cpa=&process_presence_sure=&group_ids=6445166%2C6445163%2C44720119%2C6445170%2C6445167%2C6445169%2C6445178%2C6157855&nested_group_ids=44720119%2C6157855";
+        String urlPathcat = "https://zabiray.com.ua/index.php?route=extension/feed/yandex_yml&token=rfHdys";
 
 
         try (FileWriter fileWriter1 = new FileWriter("categoryURL.txt")) {

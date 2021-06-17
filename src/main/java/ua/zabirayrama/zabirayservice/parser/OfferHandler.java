@@ -47,7 +47,7 @@ public class OfferHandler extends DefaultHandler {
 
             if (qName.equalsIgnoreCase("Offer")) {
                 // create a new Employee and put it in Map
-                long suppler_id = -9999L;
+                Long suppler_id = 1L;
                 String id = attributes.getValue("id");
                 String available = attributes.getValue("available");
                 String group_id = attributes.getValue("group_id");
