@@ -1,5 +1,5 @@
 package ua.zabirayrama.zabirayservice.configuration;
-
+/*
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,7 +9,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@EnableWebSecurity
+//EnableWebSecurity
 public class BasicConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -17,14 +17,15 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
         PasswordEncoder encoder =
                 PasswordEncoderFactories.createDelegatingPasswordEncoder();
         auth
-                .inMemoryAuthentication()
-                .withUser("user")
-                .password(encoder.encode("password"))
-                .roles("USER")
-                .and()
-                .withUser("admin")
-                .password(encoder.encode("admin"))
-                .roles("USER", "ADMIN");
+                .inMemoryAuthentication();
+             //   .withUser("user")
+             //   .password(encoder.encode("password"))
+
+              //  .roles("USER");
+              //  .and()
+              //  .withUser("admin")
+             //   .password(encoder.encode("admin"))
+             //   .roles("USER", "ADMIN");
     }
 
     @Override
@@ -37,3 +38,7 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
                 .httpBasic();
     }
 }
+
+
+
+ */
