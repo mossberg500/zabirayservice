@@ -8,6 +8,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ua.zabirayrama.zabirayservice.domain.Offer;
 
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, Long> {
 
@@ -29,5 +33,9 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     );
 
 
+    @Query("SELECT p FROM Offer p where p.date = :date")
+    List<Offer> selectUpDate(@Param("date") LocalDate date);
 
+    @Query("SELECT max(p.date) FROM Offer p")
+    LocalDate getDateOffer();
 }

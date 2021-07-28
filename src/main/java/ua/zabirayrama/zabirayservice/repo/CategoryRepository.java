@@ -18,7 +18,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     //    @Query("select u.name from Offers u inner join Category c on c.id = u.category where c.id = :id")
     @Query("select u from Category u where u.id = :id")
-    List<Category> findCategoriesByid(@Param("id") Long id);
+    Category findCategoriesByid(@Param("id") Long id);
 
 
     @Query("select o.id from Offer o inner join Category u on u.id = o.category.id where u.id = :id")

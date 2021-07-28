@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 import ua.zabirayrama.zabirayservice.domain.Category;
 import ua.zabirayrama.zabirayservice.domain.Offer;
+import ua.zabirayrama.zabirayservice.repo.CategoryRepository;
+import ua.zabirayrama.zabirayservice.repo.SupplierRepository;
 
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,7 +19,7 @@ import java.util.List;
 
 @Component
 public class XMLParserSAX {
-    public static List<Offer> xmlParserSAX() {
+    public static List<Offer> xmlParserSAX(CategoryRepository categoryRepository, SupplierRepository supplierRepository) {
 
         String urlPath = "https://zabiray.com.ua/index.php?route=extension/feed/yandex_yml&token=rfHdys";
 
@@ -26,13 +28,13 @@ public class XMLParserSAX {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
             SAXParser saxParser = saxParserFactory.newSAXParser();
-            OfferHandler handler = new OfferHandler();
+            OfferHandler handler = new OfferHandler(categoryRepository, supplierRepository);
             saxParser.parse(connection.getInputStream(), handler);
             //Get Employees list
             List<Offer> offersList = handler.getOffersList();
             //print employee information
             for (Offer offers : offersList) {
-                System.out.println(offers);
+          //      System.out.println(offers);
                 fileWriter.write(offers.toString() + '\n');
             }
             return offersList;

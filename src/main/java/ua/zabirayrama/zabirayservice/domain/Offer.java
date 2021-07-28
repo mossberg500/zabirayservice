@@ -59,11 +59,15 @@ public class Offer implements Serializable {
     @CollectionTable(name = "offer_param", joinColumns = @JoinColumn(name = "offer_id"))
     private List<String> param = new ArrayList<>();
 
+   // public Offer() {
+   // }
 
     public Offer() {
         Date dateNow = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         this.date = LocalDate.parse(dateFormat.format(dateNow));
+       // this.supplier = supplier;
+      //  this.category = category;
 
     }
 
@@ -133,7 +137,16 @@ public class Offer implements Serializable {
         return category.getId();
     }
 
-    public void setCategory(Long number) {
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+
+    /*public void setCategory(Long number) {
         if(number != null) {
             this.category.setId(number);
         } else  {
@@ -153,7 +166,7 @@ public class Offer implements Serializable {
         } else  {
             this.supplier.setId(-9999L);
         }
-    }
+    }*/
 
     public String getPicture() {
         return picture;

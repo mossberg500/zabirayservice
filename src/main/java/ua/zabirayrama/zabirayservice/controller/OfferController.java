@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.zabirayrama.zabirayservice.domain.Offer;
+import ua.zabirayrama.zabirayservice.repo.CategoryRepository;
+import ua.zabirayrama.zabirayservice.repo.SupplierRepository;
 import ua.zabirayrama.zabirayservice.search.OfferSearchValues;
 import ua.zabirayrama.zabirayservice.service.OfferService;
 import ua.zabirayrama.zabirayservice.util.MyLogger;
@@ -21,11 +23,16 @@ import java.util.NoSuchElementException;
 public class OfferController {
     private final OfferService offerService; // сервис для доступа к данным (напрямую к репозиториям не обращаемся)
 
+    private final CategoryRepository categoryRepository;
+    private final SupplierRepository supplierRepository;
+
 
     // автоматическое внедрение экземпляра класса через конструктор
     // не используем @Autowired ля переменной класса, т.к. "Field injection is not recommended "
-    public OfferController(OfferService offerService) {
+    public OfferController(OfferService offerService, CategoryRepository categoryRepository, SupplierRepository supplierRepository) {
         this.offerService = offerService;
+        this.categoryRepository = categoryRepository;
+        this.supplierRepository = supplierRepository;
     }
 
 
@@ -171,7 +178,7 @@ public class OfferController {
     public ResponseEntity saveOfferFromXML() {
         MyLogger.showMethodName("offer: saveOfferFromXML() ---------------------------------------------------------------- ");
 
-        offerService.savingOffer();
+        offerService.savingOffer(categoryRepository, supplierRepository);
 
         return new ResponseEntity(HttpStatus.OK); // просто отправляем статус 200 (операция прошла успешно)
     }

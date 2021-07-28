@@ -1,17 +1,20 @@
 package ua.zabirayrama.zabirayservice.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
 import ua.zabirayrama.zabirayservice.domain.Offer;
 import ua.zabirayrama.zabirayservice.parser.XMLParserSAX;
+import ua.zabirayrama.zabirayservice.repo.CategoryRepository;
 import ua.zabirayrama.zabirayservice.repo.OfferRepository;
+import ua.zabirayrama.zabirayservice.repo.SupplierRepository;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class OfferService {
@@ -46,19 +49,22 @@ public class OfferService {
         return offerRepository.findByParams(name, price, paging);
     }
 
-    @Transactional
-    public void savingOffer() {
-        List<Offer> offersList = XMLParserSAX.xmlParserSAX();
+    public List<Offer> selectUpDateOffer() {
+        Date dateNow = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(dateFormat.format(dateNow));
+        return offerRepository.selectUpDate(date);
+    }
 
-        for (Offer offer : offersList) {
-            //      if (offer.getDate() == LocalDate.parse(dateFormat.format(new Date()))) {
-            System.out.println("save -- " + offer.toString() + " !!!!! ");
-            offerRepository.save(offer);
-            //      }
-            //      else {
-            //          System.out.println("save --  missing  !!!!! ");
-            //      }
+
+    @Transactional
+    public void savingOffer(CategoryRepository categoryRepository, SupplierRepository supplierRepository) {
+        List<Offer> offersList = XMLParserSAX.xmlParserSAX(categoryRepository, supplierRepository);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println(offerRepository.getDateOffer() + "      "  +  LocalDate.parse(dateFormat.format(new Date())));
+        if (!offerRepository.getDateOffer().equals(LocalDate.parse(dateFormat.format(new Date())))){
+               for (Offer offer : offersList)
+                   offerRepository.save(offer);
         }
 
     }

@@ -5,6 +5,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import ua.zabirayrama.zabirayservice.domain.Offer;
+import ua.zabirayrama.zabirayservice.repo.CategoryRepository;
+import ua.zabirayrama.zabirayservice.repo.SupplierRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +14,22 @@ import java.util.List;
 @Component
 public class OfferHandler extends DefaultHandler {
 
+
+    private final CategoryRepository categoryRepository;
+    private final SupplierRepository supplierRepository;
+
     // List to Offer object
     private List<Offer> offersList = null;
     private Offer offers = null;
     private StringBuilder data = null;
+
+
+    public OfferHandler(CategoryRepository categoryRepository, SupplierRepository supplierRepository) {
+
+        this.categoryRepository = categoryRepository;
+        this.supplierRepository = supplierRepository;
+    }
+
 
     public List<Offer> getOffersList() {
         return offersList;
@@ -56,7 +70,7 @@ public class OfferHandler extends DefaultHandler {
                 offers.setId(Long.parseLong(id));
                 offers.setAvailable(Boolean.parseBoolean(available));
                 offers.setGroup_id(group_id);
-                offers.setSupplier(suppler_id);
+
                 // initialize list
                 if (offersList == null)
                     offersList = new ArrayList<>();
@@ -113,7 +127,13 @@ public class OfferHandler extends DefaultHandler {
                 offers.setCurrencyId(data.toString());
                 bCurrencyId = false;
             } else if (bCategoryId) {
-                offers.setCategory(Long.parseLong(data.toString()));
+                try {
+                    offers.setCategory(categoryRepository.getById(Long.parseLong(data.toString())));         //(categoryList.indexOf(Long.parseLong(data.toString())));
+                    offers.setSupplier(supplierRepository.findSupplierByid(Long.parseLong("1")));
+                } catch (NullPointerException e) {
+                    offers.setCategory(categoryRepository.findCategoriesByid(Long.parseLong("68261641")));
+                    offers.setSupplier(supplierRepository.findSupplierByid(Long.parseLong("-9999")));
+                }
                 bCategoryId = false;
             } else if (bPicture) {
                 offers.setPicture(data.toString());
