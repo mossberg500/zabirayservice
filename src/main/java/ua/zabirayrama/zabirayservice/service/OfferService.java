@@ -61,7 +61,7 @@ public class OfferService {
     public void savingOffer(CategoryRepository categoryRepository, SupplierRepository supplierRepository) {
         List<Offer> offersList = XMLParserSAX.xmlParserSAX(categoryRepository, supplierRepository);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println(offerRepository.getDateOffer() + "      "  +  LocalDate.parse(dateFormat.format(new Date())));
+   //     System.out.println(offerRepository.getDateOffer() + "      "  +  LocalDate.parse(dateFormat.format(new Date())));
         if (!offerRepository.getDateOffer().equals(LocalDate.parse(dateFormat.format(new Date())))){
                for (Offer offer : offersList)
                    offerRepository.save(offer);
