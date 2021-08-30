@@ -1,107 +1,100 @@
 package ua.zabirayrama.zabirayservice.controller;
 
+
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ua.zabirayrama.zabirayservice.domain.Category;
-import ua.zabirayrama.zabirayservice.parser.XMLParserSAX;
-import ua.zabirayrama.zabirayservice.repo.CategoryRepository;
-import ua.zabirayrama.zabirayservice.search.CategorySearchValues;
+import ua.zabirayrama.zabirayservice.domain.Supplier;
+import ua.zabirayrama.zabirayservice.repo.SupplierRepository;
+import ua.zabirayrama.zabirayservice.search.SupplierSearchValues;
 import ua.zabirayrama.zabirayservice.util.MyLogger;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/category") // базовый адрес
+@RequestMapping("/supplier") // базовый адрес
 @CrossOrigin(origins = "http://localhost:4200") //разрешить получать данные с данного ресурса
-public class CategoryController {
+public class SupplierController {
 
-    private final CategoryRepository categoryRepository;
+
+
+    private final SupplierRepository supplierRepository;
 
     // автоматическое внедрение экземпляра класса через конструктор
     // не используем @Autowired ля переменной класса, т.к. "Field injection is not recommended "
-    public CategoryController(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public SupplierController(SupplierRepository supplierRepository) {
+        this.supplierRepository = supplierRepository;
     }
     // получение всех данных
     @GetMapping("/all")
-    public ResponseEntity<List<Category>> findAll() {
+    public ResponseEntity<List<Supplier>> findAll() {
 
-        MyLogger.showMethodName("Category: findAll() ---------------------------------------------------------------- ");
+        MyLogger.showMethodName("Supplier: findAll() ---------------------------------------------------------------- ");
 
-        return ResponseEntity.ok(categoryRepository.findAll());
+        return ResponseEntity.ok(supplierRepository.findAll());
     }
 
-    @GetMapping("/parser")
-    public ResponseEntity savingCategory() {
-        MyLogger.showMethodName("offer: saveOfferFromXML() ---------------------------------------------------------------");
-        List<Category> categoryList = XMLParserSAX.xmlParserSAXCategory();
-        for (Category category : categoryList) {
-            categoryRepository.save(category);
-        }
-        return new ResponseEntity(HttpStatus.OK); // просто отправляем статус 200 (операция прошла успешно)
-    }
 
     @PostMapping("/add")
-    public ResponseEntity<Category> add(@RequestBody Category category){
+    public ResponseEntity<Supplier> add(@RequestBody Supplier supplier){
 
-        MyLogger.showMethodName("CategoryController: add() ---------------------------------------------------------- ");
+        MyLogger.showMethodName("SupplierController: add() ---------------------------------------------------------- ");
 
         // проверка на обязательные параметры
-        if (category.getId() == null && category.getId() == 0) {
+        if (supplier.getId() == null && supplier.getId() == 0) {
             return new ResponseEntity("redundant param: id MUST be NOT null", HttpStatus.NOT_ACCEPTABLE);
         }
 
         // если передали пустое значение title
-        if (category.getNameCategory() == null || category.getNameCategory().trim().length() == 0) {
-            return new ResponseEntity("missed param: nameCategory", HttpStatus.NOT_ACCEPTABLE);
+        if (supplier.getCompany() == null || supplier.getCompany().trim().length() == 0) {
+            return new ResponseEntity("missed param: nameSupplier", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(categoryRepository.save(category));
+        return ResponseEntity.ok(supplierRepository.save(supplier));
     }
 
     @PutMapping("/update")
-    public ResponseEntity update(@RequestBody Category category){
+    public ResponseEntity update(@RequestBody Supplier supplier){
 
-        MyLogger.showMethodName("CategoryController: update() ---------------------------------------------------------- ");
+        MyLogger.showMethodName("SupplierController: update() ---------------------------------------------------------- ");
 
 
         // проверка на обязательные параметры
-        if (category.getId() == null || category.getId() == 0) {
+        if (supplier.getId() == null || supplier.getId() == 0) {
             return new ResponseEntity("missed param: id", HttpStatus.NOT_ACCEPTABLE);
         }
 
         // если передали пустое значение title
-        if (category.getNameCategory() == null || category.getNameCategory().trim().length() == 0) {
-            return new ResponseEntity("missed param: nameCategory", HttpStatus.NOT_ACCEPTABLE);
+        if (supplier.getCompany() == null || supplier.getCompany().trim().length() == 0) {
+            return new ResponseEntity("missed param: nameSupplier", HttpStatus.NOT_ACCEPTABLE);
         }
 
         // save работает как на добавление, так и на обновление
-        categoryRepository.save(category);
+        supplierRepository.save(supplier);
 
         return new ResponseEntity(HttpStatus.OK); // просто отправляем статус 200 (операция прошла успешно)
     }
 
     // параметр id передаются не в BODY запроса, а в самом URL
     @GetMapping("/id/{id}")
-    public ResponseEntity<Category> findById(@PathVariable Long id) {
+    public ResponseEntity<Supplier> findById(@PathVariable Long id) {
 
-        MyLogger.showMethodName("CategoryController: findById() ---------------------------------------------------------- ");
+        MyLogger.showMethodName("SupplierController: findById() ---------------------------------------------------------- ");
 
 
-        Category category = null;
+        Supplier supplier = null;
 
         // можно обойтись и без try-catch, тогда будет возвращаться полная ошибка (stacktrace)
         // здесь показан пример, как можно обрабатывать исключение и отправлять свой текст/статус
         try{
-            category = categoryRepository.findById(id).get();
+            supplier = supplierRepository.findById(id).get();
         }catch (NoSuchElementException e){ // если объект не будет найден
             e.printStackTrace();
             return new ResponseEntity("id="+id+" not found", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return  ResponseEntity.ok(category);
+        return  ResponseEntity.ok(supplier);
     }
 
 
@@ -109,13 +102,13 @@ public class CategoryController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
 
-        MyLogger.showMethodName("CategoryController: delete() ---------------------------------------------------------- ");
+        MyLogger.showMethodName("SupplierController: delete() ---------------------------------------------------------- ");
 
 
         // можно обойтись и без try-catch, тогда будет возвращаться полная ошибка (stacktrace)
         // здесь показан пример, как можно обрабатывать исключение и отправлять свой текст/статус
         try {
-            categoryRepository.deleteById(id);
+            supplierRepository.deleteById(id);
         }catch (EmptyResultDataAccessException e){
             e.printStackTrace();
             return new ResponseEntity("id="+id+" not found", HttpStatus.NOT_ACCEPTABLE);
@@ -124,15 +117,15 @@ public class CategoryController {
         return new ResponseEntity(HttpStatus.OK); // просто отправляем статус 200 (операция прошла успешно)
     }
 
-    // поиск по любым параметрам CategorySearchValues
+    // поиск по любым параметрам SupplierSearchValues
     @PostMapping("/search")
-    public ResponseEntity<List<Category>> search(@RequestBody CategorySearchValues categorySearchValues){
+    public ResponseEntity<List<Supplier>> search(@RequestBody SupplierSearchValues supplierSearchValues){
 
-        MyLogger.showMethodName("CategoryController: search() ---------------------------------------------------------- ");
+        MyLogger.showMethodName("SupplierController: search() ---------------------------------------------------------- ");
 
 
         // если вместо текста будет пусто или null - вернутся все категории
-        return ResponseEntity.ok(categoryRepository.findByTitle(categorySearchValues.getTitle()));
+        return ResponseEntity.ok(supplierRepository.findByTitle(supplierSearchValues.getTitle()));
     }
 
 

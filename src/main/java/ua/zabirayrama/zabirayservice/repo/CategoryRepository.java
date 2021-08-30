@@ -31,5 +31,13 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     //   @Query("select o.id from Yatextile o inner join Category u on u.id = o.category.id where u.id = :id")
     //   List<Long> findYatextileByCategories(@Param("id") Long id);
 
+    @Query("SELECT c FROM Category c where " +
+            "(:nameCategory is null or :nameCategory='' or lower(c.nameCategory) like lower(concat('%', :nameCategory,'%')))  " +
+            "order by c.nameCategory asc")
+    List<Category> findByTitle(@Param("nameCategory") String nameCategory);
+
+    // получить все значения, сортировка по названию
+  //  List<Category> findAllByOfferBynameCategoryAsc();
+
 
 }
