@@ -11,7 +11,7 @@ public class OfferSearchValues {
     private Integer pageSize;
 
     // сортировка
-    private String sortColumn;
+    private String sortColumn = "name";
     private String sortDirection;
 
     public OfferSearchValues() {

@@ -14,6 +14,7 @@ import ua.zabirayrama.zabirayservice.search.OfferSearchValues;
 import ua.zabirayrama.zabirayservice.service.OfferService;
 import ua.zabirayrama.zabirayservice.util.MyLogger;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -140,22 +141,23 @@ public class OfferController {
 
         MyLogger.showMethodName("offer: search() ---------------------------------------------------------------- ");
 
-
         // исключить NullPointerException
-        String text = offerSearchValues.getName() != null ? offerSearchValues.getName() : null;
-
+        String text = offerSearchValues.getName() != null ? offerSearchValues.getName() : "";
+      //  System.out.println(text + "------------------------text------------------------------");
         // конвертируем Boolean в Integer
-        Double price = offerSearchValues.getPrice() != null ? offerSearchValues.getPrice() : null;
-
+        Double price = offerSearchValues.getPrice() != null ? (Double)offerSearchValues.getPrice() : 0;
+     //   System.out.println(price + "------------------------price------------------------------");
    //     Long priorityId = offerSearchValues.getPriorityId() != null ? offerSearchValues.getPriorityId() : null;
    //     Long categoryId = offerSearchValues.getCategoryId() != null ? offerSearchValues.getCategoryId() : null;
 
-        String sortColumn = offerSearchValues.getSortColumn() != null ? offerSearchValues.getSortColumn() : null;
-        String sortDirection = offerSearchValues.getSortDirection() != null ? offerSearchValues.getSortDirection() : null;
-
-        Integer pageNumber = offerSearchValues.getPageNumber() != null ? offerSearchValues.getPageNumber() : null;
-        Integer pageSize = offerSearchValues.getPageSize() != null ? offerSearchValues.getPageSize() : null;
-
+        String sortColumn = offerSearchValues.getSortColumn() != null ? offerSearchValues.getSortColumn() : "";
+     //   System.out.println(sortColumn + "------------------------sortColumn------------------------------");
+        String sortDirection = offerSearchValues.getSortDirection() != null ? offerSearchValues.getSortDirection() : "asc";
+    //    System.out.println(sortDirection + "------------------------sortDirection------------------------------");
+        Integer pageNumber = offerSearchValues.getPageNumber() != null ? offerSearchValues.getPageNumber() : 0;
+   //     System.out.println(pageNumber + "------------------------pageNumber------------------------------");
+        Integer pageSize = offerSearchValues.getPageSize() != null ? offerSearchValues.getPageSize() : 5;
+   //     System.out.println(pageSize + "------------------------pageSize------------------------------");
         Sort.Direction direction = sortDirection == null || sortDirection.trim().length() == 0 || sortDirection.trim().equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
         // подставляем все значения
@@ -165,6 +167,12 @@ public class OfferController {
 
         // объект постраничности
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
+
+   //     List<Offer> lo = offerService.findByLists(text, price);
+   //     for (Offer lol: lo){
+   //         System.out.println(lol);
+   //     }
+
 
         // результат запроса с постраничным выводом
         Page result = offerService.findByParams(text, price, pageRequest);

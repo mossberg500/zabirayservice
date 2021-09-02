@@ -32,7 +32,7 @@ public class Offer implements Serializable {
     private boolean available;
     private  String group_id;
     private String url;
-    private double price;
+    private Double price;
     private String vendorCode;
     private String currencyId;
 
@@ -103,11 +103,11 @@ public class Offer implements Serializable {
         this.url = url;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

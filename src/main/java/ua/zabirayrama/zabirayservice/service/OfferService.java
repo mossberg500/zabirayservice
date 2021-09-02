@@ -49,6 +49,12 @@ public class OfferService {
         return offerRepository.findByParams(name, price, paging);
     }
 
+    public List<Offer> findByLists(String name, Double price){
+        return offerRepository.findByList(name, price);
+    }
+
+
+
     public List<Offer> selectUpDateOffer() {
         Date dateNow = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

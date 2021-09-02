@@ -15,22 +15,28 @@ import java.util.List;
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, Long> {
 
-  //   учитываем, что параметр может быть null или пустым
+    //   учитываем, что параметр может быть null или пустым
     @Query("SELECT p FROM Offer p where " +
             "(:name is null or :name='' or lower(p.name) like lower(concat('%', :name,'%'))) and" +
             "(:price is null or p.price=:price)"
- //           "(:title is null or :title='' or lower(p.title) like lower(concat('%', :title,'%'))) and" +
- //           "(:completed is null or p.completed=:completed) and " +
- //           "(:priorityId is null or p.priority.id=:priorityId) and " +
- //           "(:categoryId is null or p.category.id=:categoryId)"
+            //           "(:title is null or :title='' or lower(p.title) like lower(concat('%', :title,'%'))) and" +
+            //           "(:completed is null or p.completed=:completed) and " +
+            //           "(:priorityId is null or p.priority.id=:priorityId) and " +
+            //           "(:categoryId is null or p.category.id=:categoryId)"
     )
     // искать по всем переданным параметрам (пустые параметры учитываться не будут)
     Page<Offer> findByParams(@Param("name") String name,
                              @Param("price") Double price,
-  //                           @Param("priorityId") Long priorityId,
- //                           @Param("categoryId") Long categoryId,
-                            Pageable pageable
+                             //                           @Param("priorityId") Long priorityId,
+                             //                           @Param("categoryId") Long categoryId,
+                             Pageable pageable
     );
+
+    @Query("SELECT p FROM Offer p where " +
+            "(:name is null or :name='' or lower(p.name) like lower(concat('%', :name,'%'))) and" +
+            "(:price is null or p.price=:price)")
+    List<Offer> findByList(@Param("name") String name,
+                           @Param("price") Double price);
 
 
     @Query("SELECT p FROM Offer p where p.date = :date")

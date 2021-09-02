@@ -1,5 +1,7 @@
 package ua.zabirayrama.zabirayservice.search;
 
+import ua.zabirayrama.zabirayservice.domain.Category;
+
 // возможные значения, по которым можно искать категории
 public class CategorySearchValues {
     private String title;
@@ -7,7 +9,7 @@ public class CategorySearchValues {
     public CategorySearchValues() {
     }
 
-    public CategorySearchValues(String title) {
+    public  CategorySearchValues(String title) {
         this.title = title;
     }
 
