@@ -16,9 +16,9 @@ import java.util.List;
 public interface OfferRepository extends JpaRepository<Offer, Long> {
 
     //   учитываем, что параметр может быть null или пустым
-    @Query("SELECT p FROM Offer p where " +
-            "(:name is null or :name='' or lower(p.name) like lower(concat('%', :name,'%'))) and" +
-            "(:price is null or p.price=:price)"
+    @Query("SELECT p.id, p.name, p.price FROM Offer p where " +
+            "(:name is null or :name='' or lower(p.name) like lower(concat('%', :name,'%')))"
+          //  "(:price is null or p.price= :price)"
             //           "(:title is null or :title='' or lower(p.title) like lower(concat('%', :title,'%'))) and" +
             //           "(:completed is null or p.completed=:completed) and " +
             //           "(:priorityId is null or p.priority.id=:priorityId) and " +
@@ -26,15 +26,15 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     )
     // искать по всем переданным параметрам (пустые параметры учитываться не будут)
     Page<Offer> findByParams(@Param("name") String name,
-                             @Param("price") Double price,
+        //                     @Param("price") Double price,
                              //                           @Param("priorityId") Long priorityId,
                              //                           @Param("categoryId") Long categoryId,
                              Pageable pageable
     );
 
-    @Query("SELECT p FROM Offer p where " +
+    @Query("SELECT p.id, p.name, p.price FROM Offer p where " +
             "(:name is null or :name='' or lower(p.name) like lower(concat('%', :name,'%'))) and" +
-            "(:price is null or p.price=:price)")
+            "(:price is null or p.price= :price)")
     List<Offer> findByList(@Param("name") String name,
                            @Param("price") Double price);
 

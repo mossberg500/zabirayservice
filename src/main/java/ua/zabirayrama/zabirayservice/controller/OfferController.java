@@ -175,7 +175,7 @@ public class OfferController {
 
 
         // результат запроса с постраничным выводом
-        Page result = offerService.findByParams(text, price, pageRequest);
+        Page result = offerService.findByParams(text, pageRequest);
 
         // результат запроса
         return ResponseEntity.ok(result);
