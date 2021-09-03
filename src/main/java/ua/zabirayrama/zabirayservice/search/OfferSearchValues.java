@@ -5,6 +5,7 @@ public class OfferSearchValues {
     // поля поиска (все типы - объектные, не примитивные. Чтобы можно было передать null)
     private String name;
     private Double price;
+    private Long categoryId;
 
     // постраничность
     private Integer pageNumber;
@@ -17,9 +18,18 @@ public class OfferSearchValues {
     public OfferSearchValues() {
     }
 
-    public OfferSearchValues(String name, Double price) {
+    public OfferSearchValues(String name, Double price, Long categoryId) {
         this.name = name;
         this.price = price;
+        this.categoryId = categoryId;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getName() {
