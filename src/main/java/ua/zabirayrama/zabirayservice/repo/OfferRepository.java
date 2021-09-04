@@ -44,4 +44,9 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
 
     @Query("SELECT max(p.date) FROM Offer p")
     LocalDate getDateOffer();
+
+    @Query("SELECT p FROM Offer p")
+    List<Offer> findAll();
+
+
 }

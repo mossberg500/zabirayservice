@@ -59,8 +59,7 @@ public class Offer implements Serializable {
     @CollectionTable(name = "offer_param", joinColumns = @JoinColumn(name = "offer_id"))
     private List<String> param = new ArrayList<>();
 
-   // public Offer() {
-   // }
+
 
     public Offer() {
         Date dateNow = new Date();
@@ -133,7 +132,7 @@ public class Offer implements Serializable {
         return category.getNameCategory();
     }
 
-    public Long getCatByID() {
+    public Long getCategoryById() {
         return category.getId();
     }
 
@@ -141,9 +140,19 @@ public class Offer implements Serializable {
         this.category = category;
     }
 
+    public Long getSupplierById() {
+        return supplier.getId();
+    }
+
+    public String getSupplier() {
+        return supplier.getName();
+    }
+
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
     }
+
+
 
 
     /*public void setCategory(Long number) {
