@@ -148,7 +148,7 @@ public class OfferController {
         Double price = offerSearchValues.getPrice() != null ? (Double)offerSearchValues.getPrice() : null;
         Long categoryId = offerSearchValues.getCategoryId() != null ? offerSearchValues.getCategoryId() : null;
      //   System.out.println(price + "------------------------price------------------------------");
-   //     Long priorityId = offerSearchValues.getPriorityId() != null ? offerSearchValues.getPriorityId() : null;
+        Long supplierId = offerSearchValues.getSupplierId() != null ? offerSearchValues.getSupplierId() : null;
    //     Long categoryId = offerSearchValues.getCategoryId() != null ? offerSearchValues.getCategoryId() : null;
 
         String sortColumn = offerSearchValues.getSortColumn() != null ? offerSearchValues.getSortColumn() : "";
@@ -176,7 +176,7 @@ public class OfferController {
 
 
         // результат запроса с постраничным выводом
-        Page result = offerService.findByParams(text, price, categoryId, pageRequest);
+        Page result = offerService.findByParams(text, price, categoryId, supplierId, pageRequest);
 
         // результат запроса
         return ResponseEntity.ok(result);

@@ -45,8 +45,8 @@ public class OfferService {
         return offerRepository.findById(id).get(); // т.к. возвращается Optional - нужно получить объект методом get()
     }
 
-    public Page findByParams(String name, Double price, Long categoryId, PageRequest paging){
-        return offerRepository.findByParams(name, price, categoryId,  paging);
+    public Page findByParams(String name, Double price, Long categoryId, Long supplierId, PageRequest paging){
+        return offerRepository.findByParams(name, price, categoryId, supplierId,  paging);
     }
 
     public List<Offer> findByLists(String name, Double price){

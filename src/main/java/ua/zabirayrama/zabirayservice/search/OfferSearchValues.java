@@ -6,6 +6,7 @@ public class OfferSearchValues {
     private String name;
     private Double price;
     private Long categoryId;
+    private Long supplierId;
 
     // постраничность
     private Integer pageNumber;
@@ -18,10 +19,19 @@ public class OfferSearchValues {
     public OfferSearchValues() {
     }
 
-    public OfferSearchValues(String name, Double price, Long categoryId) {
+    public OfferSearchValues(String name, Double price, Long categoryId, Long supplierId) {
         this.name = name;
         this.price = price;
         this.categoryId = categoryId;
+        this.supplierId = supplierId;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
     }
 
     public Long getCategoryId() {
