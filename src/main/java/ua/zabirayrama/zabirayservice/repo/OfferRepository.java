@@ -20,13 +20,14 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     @Query("SELECT p FROM Offer p where " +
             "(:name is null or :name='null' or :name='' or lower(p.name) like lower(concat('%', :name,'%')))  and" +
             "(:price is null or p.price=:price) and" +
-            "(:supplierId is null or p.category.id in :supplierId) and" +
-            "(:categoryId is null or p.category.id in :categoryId)"
+            "(:categoryId is null or p.category.id in :categoryId) and" +
+            "(:supplierId is null or p.supplier.id in :supplierId)"
     )
     Page<Offer> findByParams(@Param("name") String name,
                              @Param("price") Double price,
-                             @Param("supplierId") Long supplierId,
                              @Param("categoryId") Long categoryId,
+                             @Param("supplierId") Long supplierId,
+
                              Pageable pageable);
 
 

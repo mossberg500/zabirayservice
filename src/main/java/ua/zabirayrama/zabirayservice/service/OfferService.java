@@ -54,7 +54,7 @@ public class OfferService {
     }
 
     public Page findByParams(String name, Double price, Long categoryId, Long supplierId, PageRequest paging){
-        System.out.println("categoryId  ===>" + categoryId);
+        System.out.println("categoryId  ===>" + categoryId + "  supplierId  ===>" + supplierId);
         return offerRepository.findByParams(name, price, categoryId, supplierId,  paging);
     }
 
