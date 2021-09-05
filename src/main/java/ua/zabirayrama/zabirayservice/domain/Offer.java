@@ -38,12 +38,12 @@ public class Offer implements Serializable {
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", referencedColumnName = "id")   //@JoinColumn(name = "priority_id", referencedColumnName = "id") // по каким полям связывать (foreign key)
     private  Category category; // = new Category();
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "supplier_id")
+    @JoinColumn(name = "supplier_id", referencedColumnName = "id")
     private  Supplier supplier; // =new Supplier();;
 
 

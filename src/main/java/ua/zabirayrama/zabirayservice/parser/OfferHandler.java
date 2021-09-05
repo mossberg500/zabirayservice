@@ -131,8 +131,8 @@ public class OfferHandler extends DefaultHandler {
                     offers.setCategory(categoryRepository.getById(Long.parseLong(data.toString())));         //(categoryList.indexOf(Long.parseLong(data.toString())));
                     offers.setSupplier(supplierRepository.findSupplierByid(Long.parseLong("1")));
                 } catch (NullPointerException e) {
-                    offers.setCategory(categoryRepository.findCategoriesByid(Long.parseLong("68261641")));
-                    offers.setSupplier(supplierRepository.findSupplierByid(Long.parseLong("-9999")));
+                    offers.setCategory(categoryRepository.findCategoriesByid(Long.parseLong("0")));
+                    offers.setSupplier(supplierRepository.findSupplierByid(Long.parseLong("0")));
                 }
                 bCategoryId = false;
             } else if (bPicture) {

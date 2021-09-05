@@ -16,7 +16,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+
+// всегда нужно создавать отдельный класс Service для доступа к данным, даже если кажется,
+// что мало методов или это все можно реализовать сразу в контроллере
+// Такой подход полезен для будущих доработок и правильной архитектуры (особенно, если работаете с транзакциями)
 @Service
+
+// все методы класса должны выполниться без ошибки, чтобы транзакция завершилась
+// если в методе возникнет исключение - все выполненные операции откатятся (Rollback)
+@Transactional
 public class OfferService {
 
     private final OfferRepository offerRepository;
@@ -46,6 +54,7 @@ public class OfferService {
     }
 
     public Page findByParams(String name, Double price, Long categoryId, Long supplierId, PageRequest paging){
+        System.out.println("categoryId  ===>" + categoryId);
         return offerRepository.findByParams(name, price, categoryId, supplierId,  paging);
     }
 

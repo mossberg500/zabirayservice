@@ -142,7 +142,7 @@ public class OfferController {
         MyLogger.showMethodName("offer: search() ---------------------------------------------------------------- ");
 
         // исключить NullPointerException
-        String text = offerSearchValues.getName() != null ? offerSearchValues.getName() : null;
+        String name = offerSearchValues.getName() != null ? offerSearchValues.getName() : null;
       //  System.out.println(text + "------------------------text------------------------------");
         // конвертируем Boolean в Integer
         Double price = offerSearchValues.getPrice() != null ? (Double)offerSearchValues.getPrice() : null;
@@ -175,8 +175,11 @@ public class OfferController {
    //     }
 
 
+        System.out.println("name = " + name+ "   price = " + price  + " categoryId = " + categoryId + " supplierId = " + supplierId);
         // результат запроса с постраничным выводом
-        Page result = offerService.findByParams(text, price, categoryId, supplierId, pageRequest);
+        Page result = offerService.findByParams(name, price, categoryId, supplierId, pageRequest);
+        System.out.println(result.getContent());
+
 
         // результат запроса
         return ResponseEntity.ok(result);
