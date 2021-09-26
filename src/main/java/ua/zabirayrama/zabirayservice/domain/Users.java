@@ -2,6 +2,8 @@ package ua.zabirayrama.zabirayservice.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -9,19 +11,33 @@ import java.io.Serializable;
 public class Users implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String photoUrl;
     private Boolean followed;
     private String fullName;
     private String status;
 
+
+   @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<Location> location;
+
     public Users() {
+
+    }
+
+    public List<Location> getLocation() {
+        return location;
+    }
+
+    public void setLocation(List<Location> location) {
+        this.location = location;
     }
 
     public Long getId() {
         return id;
     }
+
 
     public String getPhotoUrl() {
         return photoUrl;
@@ -53,5 +69,17 @@ public class Users implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "id=" + id +
+                ", photoUrl='" + photoUrl + '\'' +
+                ", followed=" + followed +
+                ", fullName='" + fullName + '\'' +
+                ", status='" + status + '\'' +
+                ", location=" + location +
+                '}';
     }
 }

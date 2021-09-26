@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.zabirayrama.zabirayservice.domain.Users;
 import ua.zabirayrama.zabirayservice.repo.UsersRepository;
+import ua.zabirayrama.zabirayservice.service.UsersService;
 import ua.zabirayrama.zabirayservice.util.MyLogger;
 
 import java.util.List;
@@ -19,12 +20,12 @@ public class UsersController {
 
 
 
-    private final UsersRepository usersRepository;
+    private final UsersService usersService;
 
     // автоматическое внедрение экземпляра класса через конструктор
     // не используем @Autowired ля переменной класса, т.к. "Field injection is not recommended "
-    public UsersController(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
+    public UsersController(UsersService usersService) {
+        this.usersService = usersService;
     }
     // получение всех данных
     @GetMapping("/all")
@@ -32,7 +33,7 @@ public class UsersController {
 
         MyLogger.showMethodName("Users: findAll() ---------------------------------------------------------------- ");
 
-        return ResponseEntity.ok(usersRepository.findAll());
+        return ResponseEntity.ok(usersService.findAll());
     }
 
 
@@ -50,7 +51,7 @@ public class UsersController {
         if (users.getFullName() == null || users.getFullName().trim().length() == 0) {
             return new ResponseEntity("missed param: nameUsers", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(usersRepository.save(users));
+        return ResponseEntity.ok(usersService.add(users));
     }
 
     @PutMapping("/update")
@@ -70,7 +71,7 @@ public class UsersController {
         }
 
         // save работает как на добавление, так и на обновление
-        usersRepository.save(users);
+        usersService.add(users);
 
         return new ResponseEntity(HttpStatus.OK); // просто отправляем статус 200 (операция прошла успешно)
     }
@@ -87,7 +88,7 @@ public class UsersController {
         // можно обойтись и без try-catch, тогда будет возвращаться полная ошибка (stacktrace)
         // здесь показан пример, как можно обрабатывать исключение и отправлять свой текст/статус
         try{
-            users = usersRepository.findById(id).get();
+            users = usersService.findById(id);
         }catch (NoSuchElementException e){ // если объект не будет найден
             e.printStackTrace();
             return new ResponseEntity("id="+id+" not found", HttpStatus.NOT_ACCEPTABLE);
@@ -107,7 +108,7 @@ public class UsersController {
         // можно обойтись и без try-catch, тогда будет возвращаться полная ошибка (stacktrace)
         // здесь показан пример, как можно обрабатывать исключение и отправлять свой текст/статус
         try {
-            usersRepository.deleteById(id);
+            usersService.deleteById(id);
         }catch (EmptyResultDataAccessException e){
             e.printStackTrace();
             return new ResponseEntity("id="+id+" not found", HttpStatus.NOT_ACCEPTABLE);

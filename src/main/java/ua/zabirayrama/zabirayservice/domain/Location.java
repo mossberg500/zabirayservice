@@ -1,5 +1,7 @@
 package ua.zabirayrama.zabirayservice.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -8,7 +10,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "location")
-public class Location implements Serializable {
+public class Location  {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -17,9 +19,10 @@ public class Location implements Serializable {
     private String city;
     private String country;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", referencedColumnName = "id")
-    private  Users users;
+      private  Users users;
 
     public Location() {
     }
@@ -44,7 +47,7 @@ public class Location implements Serializable {
         this.country = country;
     }
 
-    public Users getUsers() {
+   public Users getUsers() {
         return users;
     }
 
@@ -58,7 +61,7 @@ public class Location implements Serializable {
                 "id=" + id +
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +
-                ", users=" + users +
+
                 '}';
     }
 }
