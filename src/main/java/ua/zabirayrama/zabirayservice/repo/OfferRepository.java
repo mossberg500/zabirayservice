@@ -19,12 +19,12 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     // искать по всем переданным параметрам (пустые параметры учитываться не будут)
     @Query("SELECT p FROM Offer p where " +
             "(:name is null or :name='null' or :name='' or lower(p.name) like lower(concat('%', :name,'%')))  and" +
-            "(:price is null or p.price=:price) and" +
+            "(:priceId is null or p.price.id in :priceId) and" +
             "(:categoryId is null or p.category.id in :categoryId) and" +
             "(:supplierId is null or p.supplier.id in :supplierId)"
     )
     Page<Offer> findByParams(@Param("name") String name,
-                             @Param("price") Double price,
+                             @Param("priceId") Double priceId,
                              @Param("categoryId") Long categoryId,
                              @Param("supplierId") Long supplierId,
 
@@ -32,17 +32,16 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
 
 
     @Query("SELECT p FROM Offer p where " +
-            "(:name is null or :name='' or lower(p.name) like lower(concat('%', :name,'%'))) and" +
-            "(:price is null or p.price= :price)")
-    List<Offer> findByList(@Param("name") String name,
-                           @Param("price") Double price);
+            "(:name is null or :name='' or lower(p.name) like lower(concat('%', :name,'%')))") // +
+        //    "(:price is null or p.price= :price)")
+    List<Offer> findByList(@Param("name") String name);
+          //                 @Param("price") Double price);
 
 
-    @Query("SELECT p FROM Offer p where p.date = :date")
-    List<Offer> selectUpDate(@Param("date") LocalDate date);
 
-    @Query("SELECT max(p.date) FROM Offer p")
-    LocalDate getDateOffer();
+
+    @Query("SELECT p.supplier.id FROM Offer p where p.supplier.id = :id")
+    Long getSupplierId(@Param("id") Long id);
 
     @Query("SELECT p FROM Offer p")
     List<Offer> findAll();

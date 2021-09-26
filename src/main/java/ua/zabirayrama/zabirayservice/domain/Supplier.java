@@ -17,11 +17,20 @@ public class Supplier implements Serializable {
     private String name;
     private String company;
     private String urlCompany;
+    private String color;
 
  //   @OneToMany(mappedBy = "supplier", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
  //   private List<Offer> offers = new ArrayList<>();
 
     public Supplier() {
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public Long getId() {

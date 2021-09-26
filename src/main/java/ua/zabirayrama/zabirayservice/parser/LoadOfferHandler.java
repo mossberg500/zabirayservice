@@ -4,35 +4,46 @@ import org.springframework.stereotype.Component;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import ua.zabirayrama.zabirayservice.domain.LoadOffer;
 import ua.zabirayrama.zabirayservice.domain.Offer;
 import ua.zabirayrama.zabirayservice.repo.CategoryRepository;
+import ua.zabirayrama.zabirayservice.repo.LoadCategoryRepository;
 import ua.zabirayrama.zabirayservice.repo.SupplierRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class OfferHandler extends DefaultHandler {
+public class LoadOfferHandler extends DefaultHandler {
 
 
-    private final CategoryRepository categoryRepository;
+    private final LoadCategoryRepository loadCategoryRepository;
     private final SupplierRepository supplierRepository;
+    private String codSupp;
 
     // List to Offer object
-    private List<Offer> offersList = null;
-    private Offer offers = null;
+    private List<LoadOffer> loadOfferList = null;
+    private LoadOffer loadOffer = null;
     private StringBuilder data = null;
 
 
-    public OfferHandler(CategoryRepository categoryRepository, SupplierRepository supplierRepository) {
+    public LoadOfferHandler(LoadCategoryRepository loadCategoryRepository, SupplierRepository supplierRepository) {
 
-        this.categoryRepository = categoryRepository;
+        this.loadCategoryRepository = loadCategoryRepository;
         this.supplierRepository = supplierRepository;
+
     }
 
+    public String getCodSupp() {
+        return codSupp;
+    }
 
-    public List<Offer> getOffersList() {
-        return offersList;
+    public void setCodSupp(String codSupp) {
+        this.codSupp = codSupp;
+    }
+
+    public List<LoadOffer> getLoadOfferList() {
+        return loadOfferList;
     }
 
     boolean bUrl = false;
@@ -66,14 +77,14 @@ public class OfferHandler extends DefaultHandler {
                 String available = attributes.getValue("available");
                 String group_id = attributes.getValue("group_id");
                 // initialize Offer object and set id attribute
-                offers = new Offer();
-                offers.setId(Long.parseLong(id));
-                offers.setAvailable(Boolean.parseBoolean(available));
-                offers.setGroup_id(group_id);
+                loadOffer = new LoadOffer();
+                loadOffer.setId(Long.parseLong(id));
+                loadOffer.setAvailable(Boolean.parseBoolean(available));
+                loadOffer.setGroup_id(group_id);
 
                 // initialize list
-                if (offersList == null)
-                    offersList = new ArrayList<>();
+                if (loadOfferList == null)
+                    loadOfferList = new ArrayList<>();
             } else if (qName.equalsIgnoreCase("url")) {
                 // set boolean values for fields
                 bUrl = true;
@@ -99,7 +110,7 @@ public class OfferHandler extends DefaultHandler {
                 bCode = true;
             } else if (qName.equalsIgnoreCase("param")) {
                 String name = attributes.getValue("name");
-                offers.setParam(name);
+                loadOffer.setParam(name);
                 bParam = true;
             }
 
@@ -115,53 +126,53 @@ public class OfferHandler extends DefaultHandler {
         if(beg) {
             if (bUrl) {
                 //
-                offers.setUrl(data.toString());
+                loadOffer.setUrl(data.toString());
                 bUrl = false;
             } else if (bPrice) {
-                offers.setPrice(Double.parseDouble(data.toString()));
+                loadOffer.setPrice(Double.parseDouble(data.toString()));
                 bPrice = false;
             } else if (bVendorCode) {
-                offers.setVendorCode(data.toString());
+                loadOffer.setVendorCode(data.toString());
                 bVendorCode = false;
             } else if (bCurrencyId) {
-                offers.setCurrencyId(data.toString());
+                loadOffer.setCurrencyId(data.toString());
                 bCurrencyId = false;
             } else if (bCategoryId) {
                 try {
-                    offers.setCategory(categoryRepository.getById(Long.parseLong(data.toString())));         //(categoryList.indexOf(Long.parseLong(data.toString())));
-                    offers.setSupplier(supplierRepository.findSupplierByid(Long.parseLong("1")));
+                    loadOffer.setLoadCategory(loadCategoryRepository.getById(Long.parseLong(data.toString())));         //(categoryList.indexOf(Long.parseLong(data.toString())));
+                    loadOffer.setSupplier(supplierRepository.findSupplierByid(Long.parseLong(this.codSupp)));
                 } catch (NullPointerException e) {
-                    offers.setCategory(categoryRepository.findCategoriesByid(Long.parseLong("0")));
-                    offers.setSupplier(supplierRepository.findSupplierByid(Long.parseLong("0")));
+                    loadOffer.setLoadCategory(loadCategoryRepository.findLoadCategoriesByid(Long.parseLong("0")));
+                    loadOffer.setSupplier(supplierRepository.findSupplierByid(Long.parseLong("0")));
                 }
                 bCategoryId = false;
             } else if (bPicture) {
-                offers.setPicture(data.toString());
+                loadOffer.setPicture(data.toString());
                 bPicture = false;
             } else if (bDelivery) {
-                offers.setDelivery(Boolean.parseBoolean(data.toString()));
+                loadOffer.setDelivery(Boolean.parseBoolean(data.toString()));
                 bDelivery = false;
             } else if (bName) {
-                offers.setName(data.toString());
+                loadOffer.setName(data.toString());
                 bName = false;
             } else if (bDescription) {
-                offers.setDescription(data.toString());
+                loadOffer.setDescription(data.toString());
                 bDescription = false;
             } else if (bVendor) {
-                offers.setVendor(data.toString());
+                loadOffer.setVendor(data.toString());
                 bVendor = false;
             } else if (bCode) {
-                offers.setCode(Long.parseLong(data.toString()));
+                loadOffer.setCode(Long.parseLong(data.toString()));
                 bCode = false;
             } else if (bParam) {
-                offers.setParam(data.toString());
+                loadOffer.setParam(data.toString());
                 bParam = false;
             }
 
 
             if (qName.equalsIgnoreCase("Offer")) {
                 // add Employee object to list
-                offersList.add(offers);
+                loadOfferList.add(loadOffer);
             }
         }
 

@@ -6,18 +6,19 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import ua.zabirayrama.zabirayservice.domain.Category;
+import ua.zabirayrama.zabirayservice.domain.LoadCategory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CategoryHandler extends DefaultHandler {
-    private List<Category> categoryList = null;
-    private Category category = null;
+public class LoadCategoryHandler extends DefaultHandler {
+    private List<LoadCategory> loadCategoryList = null;
+    private LoadCategory loadCategory = null;
     private StringBuilder data1 = null;
 
-    public List<Category> getCategoryList() {
-        return categoryList;
+    public List<LoadCategory> getLoadCategoryList() {
+        return loadCategoryList;
     }
 
     private boolean bName = false;
@@ -31,17 +32,17 @@ public class CategoryHandler extends DefaultHandler {
             String id = attributes.getValue("id");
             String parentId = "";
             parentId = attributes.getValue("parentId");
-            category = new Category();
-            category.setId(Long.parseLong(id));
+            loadCategory = new LoadCategory();
+            loadCategory.setId(Long.parseLong(id));
             try {
-                category.setParentId(Integer.parseInt(parentId));
+                loadCategory.setParentId(Integer.parseInt(parentId));
             } catch (Exception e) {
                 System.out.println("Присваиваем  category.setParentId = 0 ");
-                category.setParentId(0);
+                loadCategory.setParentId(0);
             }
             // initialize list
-            if (categoryList == null)
-                categoryList = new ArrayList<>();
+            if (loadCategoryList == null)
+                loadCategoryList = new ArrayList<>();
 
         }else if (qName.equalsIgnoreCase("url")) {
 
@@ -52,9 +53,9 @@ public class CategoryHandler extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (qName.equalsIgnoreCase("Category")) {
-            category.setNameCategory(data1.toString());
+            loadCategory.setNameCategory(data1.toString());
             // add Employee object to list
-            categoryList.add(category);
+            loadCategoryList.add(loadCategory);
         }
     }
 

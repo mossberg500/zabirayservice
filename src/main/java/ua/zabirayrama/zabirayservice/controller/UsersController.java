@@ -1,98 +1,99 @@
 package ua.zabirayrama.zabirayservice.controller;
 
+
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ua.zabirayrama.zabirayservice.domain.Category;
-import ua.zabirayrama.zabirayservice.parser.XMLParserSAX;
-import ua.zabirayrama.zabirayservice.repo.CategoryRepository;
-import ua.zabirayrama.zabirayservice.search.CategorySearchValues;
+import ua.zabirayrama.zabirayservice.domain.Users;
+import ua.zabirayrama.zabirayservice.repo.UsersRepository;
 import ua.zabirayrama.zabirayservice.util.MyLogger;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/category") // базовый адрес
+@RequestMapping("/users") // базовый адрес
 @CrossOrigin(origins = "http://localhost:3000") //разрешить получать данные с данного ресурса
-public class CategoryController {
+public class UsersController {
 
-    private final CategoryRepository categoryRepository;
+
+
+    private final UsersRepository usersRepository;
 
     // автоматическое внедрение экземпляра класса через конструктор
     // не используем @Autowired ля переменной класса, т.к. "Field injection is not recommended "
-    public CategoryController(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public UsersController(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
     }
     // получение всех данных
     @GetMapping("/all")
-    public ResponseEntity<List<Category>> findAll() {
+    public ResponseEntity<List<Users>> findAll() {
 
-        MyLogger.showMethodName("Category: findAll() ---------------------------------------------------------------- ");
+        MyLogger.showMethodName("Users: findAll() ---------------------------------------------------------------- ");
 
-        return ResponseEntity.ok(categoryRepository.findAll());
+        return ResponseEntity.ok(usersRepository.findAll());
     }
 
 
     @PostMapping("/add")
-    public ResponseEntity<Category> add(@RequestBody Category category){
+    public ResponseEntity<Users> add(@RequestBody Users users){
 
-        MyLogger.showMethodName("CategoryController: add() ---------------------------------------------------------- ");
+        MyLogger.showMethodName("UsersController: add() ---------------------------------------------------------- ");
 
         // проверка на обязательные параметры
-        if (category.getId() == null && category.getId() == 0) {
+        if (users.getId() == null && users.getId() == 0) {
             return new ResponseEntity("redundant param: id MUST be NOT null", HttpStatus.NOT_ACCEPTABLE);
         }
 
         // если передали пустое значение title
-        if (category.getNameCategory() == null || category.getNameCategory().trim().length() == 0) {
-            return new ResponseEntity("missed param: nameCategory", HttpStatus.NOT_ACCEPTABLE);
+        if (users.getFullName() == null || users.getFullName().trim().length() == 0) {
+            return new ResponseEntity("missed param: nameUsers", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(categoryRepository.save(category));
+        return ResponseEntity.ok(usersRepository.save(users));
     }
 
     @PutMapping("/update")
-    public ResponseEntity update(@RequestBody Category category){
+    public ResponseEntity update(@RequestBody Users users){
 
-        MyLogger.showMethodName("CategoryController: update() ---------------------------------------------------------- ");
+        MyLogger.showMethodName("UsersController: update() ---------------------------------------------------------- ");
 
 
         // проверка на обязательные параметры
-        if (category.getId() == null || category.getId() == 0) {
+        if (users.getId() == null || users.getId() == 0) {
             return new ResponseEntity("missed param: id", HttpStatus.NOT_ACCEPTABLE);
         }
 
         // если передали пустое значение title
-        if (category.getNameCategory() == null || category.getNameCategory().trim().length() == 0) {
-            return new ResponseEntity("missed param: nameCategory", HttpStatus.NOT_ACCEPTABLE);
+        if (users.getFullName() == null || users.getFullName().trim().length() == 0) {
+            return new ResponseEntity("missed param: nameUsers", HttpStatus.NOT_ACCEPTABLE);
         }
 
         // save работает как на добавление, так и на обновление
-        categoryRepository.save(category);
+        usersRepository.save(users);
 
         return new ResponseEntity(HttpStatus.OK); // просто отправляем статус 200 (операция прошла успешно)
     }
 
     // параметр id передаются не в BODY запроса, а в самом URL
     @GetMapping("/id/{id}")
-    public ResponseEntity<Category> findById(@PathVariable Long id) {
+    public ResponseEntity<Users> findById(@PathVariable Long id) {
 
-        MyLogger.showMethodName("CategoryController: findById() ---------------------------------------------------------- ");
+        MyLogger.showMethodName("UsersController: findById() ---------------------------------------------------------- ");
 
 
-        Category category = null;
+        Users users = null;
 
         // можно обойтись и без try-catch, тогда будет возвращаться полная ошибка (stacktrace)
         // здесь показан пример, как можно обрабатывать исключение и отправлять свой текст/статус
         try{
-            category = categoryRepository.findById(id).get();
+            users = usersRepository.findById(id).get();
         }catch (NoSuchElementException e){ // если объект не будет найден
             e.printStackTrace();
             return new ResponseEntity("id="+id+" not found", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return  ResponseEntity.ok(category);
+        return  ResponseEntity.ok(users);
     }
 
 
@@ -100,13 +101,13 @@ public class CategoryController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
 
-        MyLogger.showMethodName("CategoryController: delete() ---------------------------------------------------------- ");
+        MyLogger.showMethodName("UsersController: delete() ---------------------------------------------------------- ");
 
 
         // можно обойтись и без try-catch, тогда будет возвращаться полная ошибка (stacktrace)
         // здесь показан пример, как можно обрабатывать исключение и отправлять свой текст/статус
         try {
-            categoryRepository.deleteById(id);
+            usersRepository.deleteById(id);
         }catch (EmptyResultDataAccessException e){
             e.printStackTrace();
             return new ResponseEntity("id="+id+" not found", HttpStatus.NOT_ACCEPTABLE);
@@ -115,16 +116,6 @@ public class CategoryController {
         return new ResponseEntity(HttpStatus.OK); // просто отправляем статус 200 (операция прошла успешно)
     }
 
-    // поиск по любым параметрам CategorySearchValues
-    @PostMapping("/search")
-    public ResponseEntity<List<Category>> search(@RequestBody CategorySearchValues categorySearchValues){
-
-        MyLogger.showMethodName("CategoryController: search() ---------------------------------------------------------- ");
-
-
-        // если вместо текста будет пусто или null - вернутся все категории
-        return ResponseEntity.ok(categoryRepository.findByTitle(categorySearchValues.getTitle()));
-    }
 
 
 

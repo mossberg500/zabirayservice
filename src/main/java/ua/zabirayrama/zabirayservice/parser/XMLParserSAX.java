@@ -2,11 +2,11 @@ package ua.zabirayrama.zabirayservice.parser;
 
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
-import ua.zabirayrama.zabirayservice.domain.Category;
-import ua.zabirayrama.zabirayservice.domain.Offer;
+import ua.zabirayrama.zabirayservice.domain.LoadCategory;
+import ua.zabirayrama.zabirayservice.domain.LoadOffer;
 import ua.zabirayrama.zabirayservice.repo.CategoryRepository;
+import ua.zabirayrama.zabirayservice.repo.LoadCategoryRepository;
 import ua.zabirayrama.zabirayservice.repo.SupplierRepository;
-
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -19,25 +19,31 @@ import java.util.List;
 
 @Component
 public class XMLParserSAX {
-    public static List<Offer> xmlParserSAX(CategoryRepository categoryRepository, SupplierRepository supplierRepository) {
 
-        String urlPath = "https://zabiray.com.ua/index.php?route=extension/feed/yandex_yml&token=rfHdys";
+  //  public static String urlPath = "https://zabiray.com.ua/index.php?route=extension/feed/yandex_yml&token=rfHdys";
+    // public static String urlPathYAV = "https://yavshoke.ua/media/export/dom.xml";
+  //   public static String urlPathYAV = "https://yavshoke.ua/media/export/textile_opt_price.xml";
+
+    public static List<LoadOffer> xmlParserSAX(LoadCategoryRepository loadCategoryRepository, SupplierRepository supplierRepository, String urlPath, String codSupp) {
+
+
 
         try (FileWriter fileWriter = new FileWriter("parsingURL.txt")) {
             URL url = new URL(urlPath);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
             SAXParser saxParser = saxParserFactory.newSAXParser();
-            OfferHandler handler = new OfferHandler(categoryRepository, supplierRepository);
+            LoadOfferHandler handler = new LoadOfferHandler(loadCategoryRepository, supplierRepository);
+            handler.setCodSupp(codSupp);
             saxParser.parse(connection.getInputStream(), handler);
             //Get Employees list
-            List<Offer> offersList = handler.getOffersList();
+            List<LoadOffer> loadOfferList = handler.getLoadOfferList();
             //print employee information
-            for (Offer offers : offersList) {
+            for (LoadOffer loadOffer : loadOfferList) {
           //      System.out.println(offers);
-                fileWriter.write(offers.toString() + '\n');
+                fileWriter.write(loadOffer.toString() + '\n');
             }
-            return offersList;
+            return loadOfferList;
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
@@ -45,26 +51,26 @@ public class XMLParserSAX {
     }
 
 
-    public static List<Category> xmlParserSAXCategory() {
+    public static List<LoadCategory> xmlParserSAXCategory(String urlPath) {
 
-        String urlPathcat = "https://zabiray.com.ua/index.php?route=extension/feed/yandex_yml&token=rfHdys";
+     //   String urlPathcat = "https://zabiray.com.ua/index.php?route=extension/feed/yandex_yml&token=rfHdys";
 
 
         try (FileWriter fileWriter1 = new FileWriter("categoryURL.txt")) {
-            URL urlcat = new URL(urlPathcat);
+            URL urlcat = new URL(urlPath);
             HttpURLConnection connection1 = (HttpURLConnection) urlcat.openConnection();
             SAXParserFactory saxParserFactory1 = SAXParserFactory.newInstance();
             SAXParser saxParser1 = saxParserFactory1.newSAXParser();
-            CategoryHandler categoryHandler = new CategoryHandler();
-            saxParser1.parse(connection1.getInputStream(), categoryHandler);
+            LoadCategoryHandler loadCategoryHandler = new LoadCategoryHandler();
+            saxParser1.parse(connection1.getInputStream(), loadCategoryHandler);
             //Get Employees list
-            List<Category> categories = categoryHandler.getCategoryList();
+            List<LoadCategory> loadCategoryList = loadCategoryHandler.getLoadCategoryList();
             //print employee information
-            for (Category category : categories) {
-                System.out.println(category);
-                fileWriter1.write(category.toString() + '\n');
+            for (LoadCategory loadCategory : loadCategoryList) {
+                System.out.println(loadCategory);
+                fileWriter1.write(loadCategory.toString() + '\n');
             }
-            return categories;
+            return loadCategoryList;
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }

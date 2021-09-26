@@ -20,20 +20,18 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/offer") // базовый адрес
-@CrossOrigin(origins = "http://localhost:4200") //разрешить получать данные с данного ресурса
+@CrossOrigin(origins = "http://localhost:3000") //разрешить получать данные с данного ресурса
 public class OfferController {
     private final OfferService offerService; // сервис для доступа к данным (напрямую к репозиториям не обращаемся)
 
-    private final CategoryRepository categoryRepository;
-    private final SupplierRepository supplierRepository;
+
 
 
     // автоматическое внедрение экземпляра класса через конструктор
     // не используем @Autowired ля переменной класса, т.к. "Field injection is not recommended "
-    public OfferController(OfferService offerService, CategoryRepository categoryRepository, SupplierRepository supplierRepository) {
+    public OfferController(OfferService offerService) {
         this.offerService = offerService;
-        this.categoryRepository = categoryRepository;
-        this.supplierRepository = supplierRepository;
+
     }
 
 
@@ -186,14 +184,6 @@ public class OfferController {
 
     }
 
-    @GetMapping("/parser")
-    public ResponseEntity saveOfferFromXML() {
-        MyLogger.showMethodName("offer: saveOfferFromXML() ---------------------------------------------------------------- ");
-
-        offerService.savingOffer(categoryRepository, supplierRepository);
-
-        return new ResponseEntity(HttpStatus.OK); // просто отправляем статус 200 (операция прошла успешно)
-    }
 
 
 }
