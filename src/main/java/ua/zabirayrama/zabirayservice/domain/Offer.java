@@ -32,9 +32,8 @@ public class Offer implements Serializable {
 
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "price_id", referencedColumnName = "id")
-    private Price price;
+
+
 
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -112,20 +111,13 @@ public class Offer implements Serializable {
     }
 
 
-    public Price getPrice() {
-        return price;
+    public Long getId_offer() {
+        return id_offer;
     }
 
-    public void setPrice(Price price) {
-        this.price = price;
+    public void setId_offer(Long id_offer) {
+        this.id_offer = id_offer;
     }
-
-
-    public Long getPriceId() {
-        return price.getId();
-    }
-
-
 
     public String getCategory() {
         return category.getNameCategory();
@@ -241,7 +233,7 @@ public class Offer implements Serializable {
                 ", available=" + available +
                 ", group_id='" + group_id + '\'' +
                 ", url='" + url + '\'' +
-                ", price=" + price +
+
                 ", vendorCode='" + vendorCode + '\'' +
 
                 ", picture='" + picture + '\'' +

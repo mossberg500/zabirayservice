@@ -1,10 +1,7 @@
 package ua.zabirayrama.zabirayservice.domain;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
@@ -15,7 +12,15 @@ public class Price implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    private String currencyId;
+
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_offer", referencedColumnName = "id_offer")
+    private Offer offer;
+
+
+    private Long Price;
     private Date date;
 
     public Price() {
@@ -25,14 +30,20 @@ public class Price implements Serializable {
         return id;
     }
 
-
-
-    public String getCurrencyId() {
-        return currencyId;
+    public Offer getOffer() {
+        return offer;
     }
 
-    public void setCurrencyId(String currencyId) {
-        this.currencyId = currencyId;
+    public void setOffer(Offer offer) {
+        this.offer = offer;
+    }
+
+    public Long getPrice() {
+        return Price;
+    }
+
+    public void setPrice(Long price) {
+        Price = price;
     }
 
     public Date getDate() {
@@ -47,7 +58,8 @@ public class Price implements Serializable {
     public String toString() {
         return "Price{" +
                 "id=" + id +
-                ", currencyId='" + currencyId + '\'' +
+                ", offer=" + offer +
+                ", Price=" + Price +
                 ", date=" + date +
                 '}';
     }

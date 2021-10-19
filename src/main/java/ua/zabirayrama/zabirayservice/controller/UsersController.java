@@ -2,9 +2,12 @@ package ua.zabirayrama.zabirayservice.controller;
 
 
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.zabirayrama.zabirayservice.domain.Offer;
 import ua.zabirayrama.zabirayservice.domain.Users;
 import ua.zabirayrama.zabirayservice.repo.UsersRepository;
 import ua.zabirayrama.zabirayservice.service.UsersService;
@@ -118,6 +121,16 @@ public class UsersController {
     }
 
 
+    @PostMapping("/get")
+    public ResponseEntity<Page<Users>> get(@RequestParam Integer pageNumber,
+                                           @RequestParam Integer pageSize
+                              ) {
+        Integer pageN = pageNumber != null ? pageNumber-1 : 0;
+        Integer pageS = pageSize != null ? pageSize : 5;
 
+        PageRequest pageRequest = PageRequest.of(pageN, pageS);
+        Page result = usersService.findByPages(pageRequest);
 
+        return ResponseEntity.ok(result);
+    }
 }

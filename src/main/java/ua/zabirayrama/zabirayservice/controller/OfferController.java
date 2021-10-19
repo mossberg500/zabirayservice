@@ -131,6 +131,29 @@ public class OfferController {
         return ResponseEntity.ok(offer);
     }
 
+    // получение объекта по id_Offer
+    @GetMapping("/id_Offer/{id}")
+    public ResponseEntity<Offer> findByIdOffer(@PathVariable Long id) {
+
+        MyLogger.showMethodName("offer: findByIdOffer() ---------------------------------------------------------------- ");
+
+        Offer offer = null;
+
+        // можно обойтись и без try-catch, тогда будет возвращаться полная ошибка (stacktrace)
+        // здесь показан пример, как можно обрабатывать исключение и отправлять свой текст/статус
+        try {
+            offer = offerService.findByIdOffer(id);
+        } catch (NoSuchElementException e) { // если объект не будет найден
+            e.printStackTrace();
+            return new ResponseEntity("id_Offer=" + id + " not found", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return ResponseEntity.ok(offer);
+    }
+
+
+
+
 
     // поиск по любым параметрам
     // OfferSearchValues содержит все возможные параметры поиска
@@ -143,7 +166,7 @@ public class OfferController {
         String name = offerSearchValues.getName() != null ? offerSearchValues.getName() : null;
       //  System.out.println(text + "------------------------text------------------------------");
         // конвертируем Boolean в Integer
-        Double price = offerSearchValues.getPrice() != null ? (Double)offerSearchValues.getPrice() : null;
+
         Long categoryId = offerSearchValues.getCategoryId() != null ? offerSearchValues.getCategoryId() : null;
      //   System.out.println(price + "------------------------price------------------------------");
         Long supplierId = offerSearchValues.getSupplierId() != null ? offerSearchValues.getSupplierId() : null;
@@ -173,9 +196,9 @@ public class OfferController {
    //     }
 
 
-        System.out.println("name = " + name+ "   price = " + price  + " categoryId = " + categoryId + " supplierId = " + supplierId);
+        System.out.println("name = " + name  + " categoryId = " + categoryId + " supplierId = " + supplierId);
         // результат запроса с постраничным выводом
-        Page result = offerService.findByParams(name, price, categoryId, supplierId, pageRequest);
+        Page result = offerService.findByParams(name, categoryId, supplierId, pageRequest);
         System.out.println(result.getContent());
 
 

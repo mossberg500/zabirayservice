@@ -19,16 +19,16 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     // искать по всем переданным параметрам (пустые параметры учитываться не будут)
     @Query("SELECT p FROM Offer p where " +
             "(:name is null or :name='null' or :name='' or lower(p.name) like lower(concat('%', :name,'%')))  and" +
-            "(:priceId is null or p.price.id in :priceId) and" +
             "(:categoryId is null or p.category.id in :categoryId) and" +
             "(:supplierId is null or p.supplier.id in :supplierId)"
     )
     Page<Offer> findByParams(@Param("name") String name,
-                             @Param("priceId") Double priceId,
                              @Param("categoryId") Long categoryId,
                              @Param("supplierId") Long supplierId,
-
                              Pageable pageable);
+
+    @Query("SELECT ofer FROM Offer ofer where ofer.id_offer = :id_offer")
+    Offer findByIdOffer(@Param("id_offer") Long id_offer);
 
 
     @Query("SELECT p FROM Offer p where " +
@@ -36,6 +36,8 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
         //    "(:price is null or p.price= :price)")
     List<Offer> findByList(@Param("name") String name);
           //                 @Param("price") Double price);
+
+
 
 
 
